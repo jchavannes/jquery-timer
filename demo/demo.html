@@ -34,7 +34,7 @@
 	<input type='text' name='msg' value='hello world' /><br/>
 	<label for='time'>time </label>
 	<input type='text' name='time' size='8' value='2500' /><br/>
-	<input class='once' type='button' value='$.timer_once()' />
+	<input class='once' type='button' value='$.timerOnce()' />
 	
 	<br/>
 	<br/>
@@ -61,7 +61,7 @@
 			$('.once').click(function() {
 			 	var msg = $('input[name=msg]').val();
 			 	var time = $('input[name=time]').val();
-				new $.timer_once(function() {
+				new $.timerOnce(function() {
 					alert(msg);
 				}, time);
 			});
@@ -85,7 +85,7 @@ var my_timer = new $.timer(function() {
 $('.once').click(function() {
 	var msg = $('input[name=msg]').val();
 	var time = $('input[name=time]').val();
-	new $.timer_once(function() {
+	new $.timerOnce(function() {
 		alert(msg);
 	}, time);
 });

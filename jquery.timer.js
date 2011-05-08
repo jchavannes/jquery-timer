@@ -27,16 +27,15 @@
  */
 
 ;(function($) {
-	$.timer_once = function(func, time) {
-	 	var realthis = this;
-		window.setTimeout(function() { func(); realthis = undefined;}, time);
+	$.timerOnce = function(func, time) {
+	 	var timer = this;
+		window.setTimeout(function() { func(); timer = undefined;}, time);
 		this.cancel = function() {
 			func = undefined;
-			realthis = undefined;
+			timer = undefined;
 		};
 	};
 	$.timer = function(func, time, begin) {
-		var realthis = this;
 	 	this.load = function(func, time, begin) {
 		 	this.whatHappens = func;
 		 	if(time != undefined) {
@@ -48,8 +47,13 @@
 		 	}
 	 	};
 	 	this.once = function(time) {
-		 	this.tempTime = this.intervalTime;
-		 	this.intervalTime = time;
+	 	 	if(time != undefined) {
+			 	this.tempTime = this.intervalTime;
+			 	this.intervalTime = time;
+			} else {
+			 	this.tempTime = this.intervalTime;
+			 	this.intervalTime = 0;
+			}
 	 	 	this.active = 1;
 		 	this.setTimer();
 			return this;
@@ -88,8 +92,8 @@
 		};
 	 	this.setTimer = function() {
 			this.clearTimer();
-			var realthis = this;
-			this.timeoutObject = window.setTimeout(function() {realthis.go();}, this.intervalTime);
+			var timer = this;
+			this.timeoutObject = window.setTimeout(function() {timer.go();}, this.intervalTime);
 		};
 		this.clearTimer = function() {
 			window.clearTimeout(this.timeoutObject);
