@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
+<head> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<title>jQuery Timer Demo</title>
+	
+	<style type='text/css'>
+	body {
+		font-family: Arial;
+		font-size: 12px;
+	}
+	label {
+	 	display: inline-block;
+	 	*display:inline;
+	 	zoom:1;
+		width: 30px;
+	}
+	input[type=button] {
+		padding: 3px 10px;
+		margin: 10px 0px 5px;
+	}
+	p {
+		margin: 0px;
+	}
+	
+	</style>
+	
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="../jquery.timer.js"></script>
+</head> 
+<body>
+	
+	<label for='msg'>msg </label>
+	<input type='text' name='msg' value='hello world' /><br/>
+	<label for='time'>time </label>
+	<input type='text' name='time' size='8' value='2500' /><br/>
+	<input class='once' type='button' value='$.timer_once()' />
+	
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+
+	<p>This timer has been running for <span>0</span> seconds.</p>
+	
+	<input type='button' value='my_timer.pause()' onclick='my_timer.pause();' /><br/>
+	<input type='button' value='my_timer.play()' onclick='my_timer.play();' /><br/>
+	<input type='button' value='my_timer.toggle()' onclick='my_timer.toggle();' />
+	
+	<script type="text/javascript">
+	
+		var my_timer;	
+		$(document).ready(function() {
+
+			var seconds = 1;
+			my_timer = new $.timer(function() {
+				$('span').html(seconds);
+				seconds++;
+			}, 1000, true);
+			
+			$('.once').click(function() {
+			 	var msg = $('input[name=msg]').val();
+			 	var time = $('input[name=time]').val();
+				new $.timer_once(function() {
+					alert(msg);
+				}, time);
+			});
+		});
+	
+	</script>
+	
+	<br/>
+	<br/>
+	<br/>
+
+	<p>
+		<pre>
+
+var seconds = 1;
+var my_timer = new $.timer(function() {
+	$('span').html(seconds);
+	seconds++;
+}, 1000, true);
+
+$('.once').click(function() {
+	var msg = $('input[name=msg]').val();
+	var time = $('input[name=time]').val();
+	new $.timer_once(function() {
+		alert(msg);
+	}, time);
+});
+		</pre>
+	</p>
+	
+</body>
+</html>
