@@ -27,15 +27,7 @@
  */
 
 ;(function($) {
-	$.timerOnce = function(func, time) {
-	 	var timer = this;
-		window.setTimeout(function() { func(); timer = undefined;}, time);
-		this.cancel = function() {
-			func = undefined;
-			timer = undefined;
-		};
-	};
-	$.timer = function(func, time, begin) {
+	$.timer = function(func, time, begin) {	
 	 	this.load = function(func, time, begin) {
 		 	this.whatHappens = func;
 		 	if(time != undefined) {
@@ -98,6 +90,12 @@
 		this.clearTimer = function() {
 			window.clearTimeout(this.timeoutObject);
 		};
-	 	this.load(func, time, begin);
+
+	 	if(this.whatHappens != undefined) {
+	 		return new $.timer(func, time, begin);
+	 	} else {
+			this.load(func, time, begin);
+	 	 	return this;
+	 	}
 	};
 })(jQuery);
