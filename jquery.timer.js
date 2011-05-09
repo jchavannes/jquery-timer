@@ -29,11 +29,12 @@
 ;(function($) {
 	$.timer = function(func, time, autostart) {	
 	 	this.set = function(func, time, autostart) {
+	 		this.init = true;
 	 	 	if(typeof func == 'object') {
-		 	 	var params = ['autostart', 'time', 'action'];
-	 	 	 	for(var arg in params) {
-		 	 		if(func[params[arg]] != undefined) {
-		 	 			eval(params[arg] + " = func[params[arg]]");
+		 	 	var paramList = ['autostart', 'time', 'action'];
+	 	 	 	for(var arg in paramList) {
+		 	 		if(func[paramList[arg]] != undefined) {
+		 	 			eval(paramList[arg] + " = func[paramList[arg]]");
 		 	 		}
 	 	 	 	};
  	 			func = func.action;
@@ -44,7 +45,7 @@
 		 	if(!isNaN(time)) {
 			 	this.intervalTime = time;
 		 	}
-		 	if(autostart) {
+		 	if(autostart && !this.active) {
 			 	this.active = true;
 			 	this.setTimer();
 		 	}
@@ -70,6 +71,7 @@
 			this.clearTimer();
 			return this;
 		};
+		this.stop = this.pause;
 		this.toggle = function() {
 			if(this.active) {
 				this.pause();
@@ -86,6 +88,9 @@
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
+	 	 	if(typeof this.action != 'function') {
+	 	 		return;
+	 	 	}
 	 	 	if(isNaN(time)) {
 	 	 		time = this.intervalTime;
 	 	 	}
@@ -106,12 +111,12 @@
 	 			this.setTimer();
 	 		}
 	 	};
-
-	 	if(this.action != undefined) {
+	 	
+	 	if(this.init) {
 	 		return new $.timer(func, time, autostart);
 	 	} else {
 			this.set(func, time, autostart);
-	 	 	return this;
+	 		return this;
 	 	}
 	};
 })(jQuery);

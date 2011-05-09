@@ -1,7 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/tr/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"> 
 <head> 
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta type="author" content="Jason Chavannes" />
 	<title>jQuery Timer Demo</title>
 	
 	<style type='text/css'>
@@ -38,14 +39,7 @@
 
 	<p>
 		<pre>
-
 var countOne = 0, countTwo = 0;
-
-var timerOne = $.timer(function() {
-	countOne++;
-	$('.one').html(countOne);
-}, 1000, true);
-
 	
 var params = {
 	action : function() {
@@ -56,7 +50,16 @@ var params = {
 	autostart: true
 };
 
-var timerTwo = $.timer(params);
+
+var timerOne;
+var timerTwo = $.timer();
+
+timerOne = $.timer(function() {
+	countOne++;
+	$('.one').html(countOne);
+}, 1000, true);
+
+timerTwo.set(params);
 
 		</pre>
 	</p>
@@ -85,8 +88,8 @@ var timerTwo = $.timer(params);
 	
 	<script type="text/javascript">
 	
-		var timerOne, timerTwo, params;	
-		var countOne = 0, countTwo = 0;
+		var timerOne, params;	
+		var countOne = 0, countTwo = 0, timerTwo = $.timer();
 		$(document).ready(function() {
 			
 			timerOne = $.timer(function() {
@@ -102,7 +105,7 @@ var timerTwo = $.timer(params);
 				time : 1500,
 				autostart: true
 			};
-			timerTwo = $.timer().set(params);
+			timerTwo.set(params);
 			
 		});
 	
