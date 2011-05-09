@@ -26,8 +26,8 @@
 	 	display: inline-block;
 	 	*display:inline;
 	 	zoom:1;
-		width: 300px;
-	}
+		width: 300px; 
+	} 
 	
 	</style>
 	
@@ -45,11 +45,18 @@ var timerOne = $.timer(function() {
 	countOne++;
 	$('.one').html(countOne);
 }, 1000, true);
-			
-var timerTwo = $.timer(function() {
-	countTwo++;
-	$('.two').html(countTwo);				
-}, 1500, true);
+
+	
+var params = {
+	action : function() {
+		countTwo++;
+		$('.two').html(countTwo);				
+	},
+	time : 1500,
+	autostart: true
+};
+
+var timerTwo = $.timer(params);
 
 		</pre>
 	</p>
@@ -57,41 +64,45 @@ var timerTwo = $.timer(function() {
 	<div>
 		<p>Timer one has been executed <span class='one'>0</span> times.</p>
 		
-		<input type='button' value='timerOne.pause()' onclick='timerOne.pause();' /><br/>
 		<input type='button' value='timerOne.play()' onclick='timerOne.play();' /><br/>
+		<input type='button' value='timerOne.pause()' onclick='timerOne.pause();' /><br/>
 		<input type='button' value='timerOne.toggle()' onclick='timerOne.toggle();' /><br/>
 		<input type='button' value='timerOne.once()' onclick='timerOne.once();' /><br/>
-		<input type='button' value='timerOne.once(1000)' onclick='timerOne.once(1000);' /><br/>
+		<input type='button' value='timerOne.once(2000)' onclick='timerOne.once(2000);' /><br/>
 		<input type='button' value='timerOne.reset()' onclick='timerOne.reset();' />
 	</div>
 
 	<div>
 		<p>Timer two has been executed <span class='two'>0</span> times.</p>
 		
-		<input type='button' value='timerTwo.pause()' onclick='timerTwo.pause();' /><br/>
 		<input type='button' value='timerTwo.play()' onclick='timerTwo.play();' /><br/>
+		<input type='button' value='timerTwo.pause()' onclick='timerTwo.pause();' /><br/>
 		<input type='button' value='timerTwo.toggle()' onclick='timerTwo.toggle();' /><br/>
 		<input type='button' value='timerTwo.once()' onclick='timerTwo.once();' /><br/>
-		<input type='button' value='timerTwo.once(1000)' onclick='timerTwo.once(1000);' /><br/>
+		<input type='button' value='timerTwo.once(2000)' onclick='timerTwo.once(2000);' /><br/>
 		<input type='button' value='timerTwo.reset()' onclick='timerTwo.reset();' />
 	</div>
 	
 	<script type="text/javascript">
 	
-		var timerOne, timerTwo;	
+		var timerOne, timerTwo, params;	
+		var countOne = 0, countTwo = 0;
 		$(document).ready(function() {
-
-			var countOne = 0, countTwo = 0;
 			
 			timerOne = $.timer(function() {
 				countOne++;
 				$('.one').html(countOne);
 			}, 1000, true);
 			
-			timerTwo = $.timer(function() {
-				countTwo++;
-				$('.two').html(countTwo);				
-			}, 1500, true);
+			params = {
+				action : function() {
+					countTwo++;
+					$('.two').html(countTwo);				
+				},
+				time : 1500,
+				autostart: true
+			};
+			timerTwo = $.timer(params);
 			
 		});
 	

@@ -27,38 +27,43 @@
  */
 
 ;(function($) {
-	$.timer = function(func, time, begin) {	
-	 	this.load = function(func, time, begin) {
-		 	this.whatHappens = func;
+	$.timer = function(func, time, autostart) {	
+	 	this.set = function(func, time, autostart) {
+	 	 	var params = ['autostart', 'time', 'action'];
+	 	 	if(typeof func == 'object') {
+	 	 	 	for(var arg in params) {
+		 	 		if(func[params[arg]] != undefined) {
+		 	 			eval(params[arg] + " = func[params[arg]]");
+		 	 		}
+	 	 	 	};
+ 	 			func = func.action;
+	 	 	}
+	 	 	if(func != undefined) {
+			 	this.whatHappens = func;
+			}
 		 	if(time != undefined) {
 			 	this.intervalTime = time;
 		 	}
-		 	if(begin == true) {		 	 
-			 	this.active = 2;
+		 	if(autostart == true) {		 	 
+			 	this.active = 1;
 			 	this.setTimer();
 		 	}
 	 	};
 	 	this.once = function(time) {
-	 	 	if(time != undefined) {
-			 	this.tempTime = this.intervalTime;
-			 	this.intervalTime = time;
-			} else {
-			 	this.tempTime = this.intervalTime;
-			 	this.intervalTime = 0;
-			}
-	 	 	this.active = 1;
-		 	this.setTimer();
-			return this;
+	 		if(time != undefined) {
+		 		this.setOnce(time);
+	 		} else {
+		 		this.setOnce();
+		 	}
+	 		return this;
+	 	};
+	 	this.goOnce = function() {
+			this.whatHappens();
 	 	};
 	 	this.go = function() {
-	 		if(this.active > 0) {	 			
+	 		if(this.active != 0) {
 	 			this.whatHappens();
-		 		if(this.active == 1) {
-		 		 	this.active = 0;
-				 	this.intervalTime = this.tempTime;
-		 		} else {
-		 			this.setTimer();
-		 		}
+	 			this.setTimer();
 	 		}
 	 	};
 		this.pause = function() {
@@ -67,8 +72,10 @@
 			return this;
 		};
 		this.play = function() {
-			this.active = 2;
-			this.setTimer();
+			if(this.active == 0) {
+				this.active = 1;
+				this.setTimer();
+			}
 			return this;
 		};
 		this.toggle = function() {
@@ -82,19 +89,29 @@
 		this.reset = function() {
 			this.pause().play();
 		};
-	 	this.setTimer = function() {
+		this.setOnce = function(time) {
+	 	 	if(time == undefined) {
+	 	 		time = 0;
+	 	 	}
+			var timer = this;
+			window.setTimeout(function() {timer.goOnce();}, time);
+		}
+	 	this.setTimer = function(time) {
+	 	 	if(time == undefined) {
+	 	 		time = this.intervalTime;
+	 	 	}
 			this.clearTimer();
 			var timer = this;
-			this.timeoutObject = window.setTimeout(function() {timer.go();}, this.intervalTime);
+			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
 		this.clearTimer = function() {
 			window.clearTimeout(this.timeoutObject);
 		};
 
 	 	if(this.whatHappens != undefined) {
-	 		return new $.timer(func, time, begin);
+	 		return new $.timer(func, time, autostart);
 	 	} else {
-			this.load(func, time, begin);
+			this.set(func, time, autostart);
 	 	 	return this;
 	 	}
 	};
