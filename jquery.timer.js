@@ -29,8 +29,8 @@
 ;(function($) {
 	$.timer = function(func, time, autostart) {	
 	 	this.set = function(func, time, autostart) {
-	 	 	var params = ['autostart', 'time', 'action'];
 	 	 	if(typeof func == 'object') {
+		 	 	var params = ['autostart', 'time', 'action'];
 	 	 	 	for(var arg in params) {
 		 	 		if(func[params[arg]] != undefined) {
 		 	 			eval(params[arg] + " = func[params[arg]]");
@@ -38,20 +38,20 @@
 	 	 	 	};
  	 			func = func.action;
 	 	 	}
-	 	 	if(func != undefined) {
+	 	 	if(typeof func == 'function') {
 			 	this.action = func;
 			}
-		 	if(time != undefined) {
+		 	if(!isNaN(time)) {
 			 	this.intervalTime = time;
 		 	}
-		 	if(autostart == true) {		 	 
-			 	this.active = 1;
+		 	if(autostart) {
+			 	this.active = true;
 			 	this.setTimer();
 		 	}
 		 	return this;
 	 	};
 	 	this.once = function(time) {
-	 		if(time != undefined) {
+	 		if(!isNaN(time)) {
 		 		this.setOnce(time);
 	 		} else {
 		 		this.setOnce();
@@ -59,19 +59,19 @@
 	 		return this;
 	 	};
 		this.play = function() {
-			if(this.active == 0) {
-				this.active = 1;
+			if(!this.active) {
+				this.active = true;
 				this.setTimer();
 			}
 			return this;
 		};
 		this.pause = function() {
-			this.active = 0;
+			this.active = false;
 			this.clearTimer();
 			return this;
 		};
 		this.toggle = function() {
-			if(this.active > 0) {
+			if(this.active) {
 				this.pause();
 			} else {
 				this.play();
@@ -86,28 +86,25 @@
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
-	 	 	if(time == undefined) {
+	 	 	if(isNaN(time)) {
 	 	 		time = this.intervalTime;
 	 	 	}
-			this.clearTimer();
 			var timer = this;
+			this.clearTimer();
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
 		this.setOnce = function(time) {
-	 	 	if(time == undefined) {
+	 	 	if(isNaN(time)) {
 	 	 		time = 0;
 	 	 	}
 			var timer = this;
-			window.setTimeout(function() {timer.goOnce();}, time);
+			window.setTimeout(function() {timer.action();}, time);
 		};
 	 	this.go = function() {
-	 		if(this.active != 0) {
+	 		if(this.active) {
 	 			this.action();
 	 			this.setTimer();
 	 		}
-	 	};
-	 	this.goOnce = function() {
-			this.action();
 	 	};
 
 	 	if(this.action != undefined) {
