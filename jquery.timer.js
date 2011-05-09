@@ -48,6 +48,7 @@
 			 	this.active = 1;
 			 	this.setTimer();
 		 	}
+		 	return this;
 	 	};
 	 	this.once = function(time) {
 	 		if(time != undefined) {
@@ -88,6 +89,7 @@
 		};
 		this.reset = function() {
 			this.pause().play();
+			return this;
 		};
 		this.setOnce = function(time) {
 	 	 	if(time == undefined) {
