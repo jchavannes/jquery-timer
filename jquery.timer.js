@@ -39,7 +39,7 @@
  	 			func = func.action;
 	 	 	}
 	 	 	if(func != undefined) {
-			 	this.whatHappens = func;
+			 	this.action = func;
 			}
 		 	if(time != undefined) {
 			 	this.intervalTime = time;
@@ -58,25 +58,16 @@
 		 	}
 	 		return this;
 	 	};
-	 	this.goOnce = function() {
-			this.whatHappens();
-	 	};
-	 	this.go = function() {
-	 		if(this.active != 0) {
-	 			this.whatHappens();
-	 			this.setTimer();
-	 		}
-	 	};
-		this.pause = function() {
-			this.active = 0;
-			this.clearTimer();
-			return this;
-		};
 		this.play = function() {
 			if(this.active == 0) {
 				this.active = 1;
 				this.setTimer();
 			}
+			return this;
+		};
+		this.pause = function() {
+			this.active = 0;
+			this.clearTimer();
 			return this;
 		};
 		this.toggle = function() {
@@ -91,13 +82,9 @@
 			this.pause().play();
 			return this;
 		};
-		this.setOnce = function(time) {
-	 	 	if(time == undefined) {
-	 	 		time = 0;
-	 	 	}
-			var timer = this;
-			window.setTimeout(function() {timer.goOnce();}, time);
-		}
+		this.clearTimer = function() {
+			window.clearTimeout(this.timeoutObject);
+		};
 	 	this.setTimer = function(time) {
 	 	 	if(time == undefined) {
 	 	 		time = this.intervalTime;
@@ -106,11 +93,24 @@
 			var timer = this;
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
-		this.clearTimer = function() {
-			window.clearTimeout(this.timeoutObject);
+		this.setOnce = function(time) {
+	 	 	if(time == undefined) {
+	 	 		time = 0;
+	 	 	}
+			var timer = this;
+			window.setTimeout(function() {timer.goOnce();}, time);
 		};
+	 	this.go = function() {
+	 		if(this.active != 0) {
+	 			this.action();
+	 			this.setTimer();
+	 		}
+	 	};
+	 	this.goOnce = function() {
+			this.action();
+	 	};
 
-	 	if(this.whatHappens != undefined) {
+	 	if(this.action != undefined) {
 	 		return new $.timer(func, time, autostart);
 	 	} else {
 			this.set(func, time, autostart);
