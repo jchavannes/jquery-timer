@@ -52,11 +52,11 @@
 		 	return this;
 	 	};
 	 	this.once = function(time) {
-	 		if(!isNaN(time)) {
-		 		this.setOnce(time);
-	 		} else {
-		 		this.setOnce();
-		 	}
+	 	 	if(isNaN(time)) {
+	 	 		time = 0;
+	 	 	}
+			var timer = this;
+			window.setTimeout(function() {timer.action();}, time);
 	 		return this;
 	 	};
 		this.play = function() {
@@ -97,13 +97,6 @@
 			var timer = this;
 			this.clearTimer();
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
-		};
-		this.setOnce = function(time) {
-	 	 	if(isNaN(time)) {
-	 	 		time = 0;
-	 	 	}
-			var timer = this;
-			window.setTimeout(function() {timer.action();}, time);
 		};
 	 	this.go = function() {
 	 		if(this.active) {
