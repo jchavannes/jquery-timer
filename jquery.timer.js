@@ -31,7 +31,7 @@
 	 	this.set = function(func, time, autostart) {
 	 		this.init = true;
 	 	 	if(typeof func == 'object') {
-		 	 	var paramList = ['autostart', 'time', 'action'];
+		 	 	var paramList = ['autostart', 'time'];
 	 	 	 	for(var arg in paramList) {
 		 	 		if(func[paramList[arg]] != undefined) {
 		 	 			eval(paramList[arg] + " = func[paramList[arg]]");
@@ -52,10 +52,8 @@
 		 	return this;
 	 	};
 	 	this.once = function(time) {
-	 	 	if(isNaN(time)) {
-	 	 		time = 0;
-	 	 	}
 			var timer = this;
+	 	 	if(isNaN(time)) {time = 0;}
 			window.setTimeout(function() {timer.action();}, time);
 	 		return this;
 	 	};
@@ -88,9 +86,7 @@
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
-	 	 	if(typeof this.action != 'function') {
-	 	 		return;
-	 	 	}
+	 	 	if(typeof this.action != 'function') {return;}
 	 	 	if(isNaN(time)) {
 	 	 		time = this.intervalTime;
 	 	 	}
