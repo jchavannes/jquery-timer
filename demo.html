@@ -53,7 +53,7 @@
 	 	zoom:1;
 		width: 300px; 
 	} 
-	.one, .two {
+	.count {
 		font-weight: bold;
 		font-size: 20px;
 		padding: 0px 2px;
@@ -67,85 +67,53 @@
 
 	<h1>jQuery Timer Demo</h1>
 	<p>by <a href='mailto:jason.chavannes@gmail.com'>Jason Chavannes</a></p>
-	<p><a href='http://code.google.com/p/jquery-timer/'>http://code.google.com/p/jquery-timer/</a></p>
+	<p><a href='http://jchavannes.com/jquery-timer'>http://jchavannes.com/jquery-timer</a></p>
 
 	<hr/><br/>
+	
+		<p>timer has been played <span class='count'>0</span> times.</p>
 
 	<div>
-		<p>timer1 has been played <span class='one'>0</span> times.</p>
 		
-		<input type='button' value='timer1.play()' onclick='timer1.play();' /><br/>
-		<input type='button' value='timer1.pause()' onclick='timer1.pause();' /><br/>
-		<input type='button' value='timer1.toggle()' onclick='timer1.toggle();' /><br/>
-		<input type='button' value='timer1.reset()' onclick='timer1.reset();' /><br/>
-		<input type='button' value='timer1.once()' onclick='timer1.once();' /><br/>
-		<input type='button' value='timer1.once(5000)' onclick='timer1.once(5000);' /><br/>
-		<input type='button' value='timer1.set({time:1000})' onclick='timer1.set({time:1000});' /><br/>
-		<input type='button' value='timer1.set({time:2000})' onclick='timer1.set({time:2000});' />
+		<input type='button' value='timer.play()' onclick='timer.play();' /><br/>
+		<input type='button' value='timer.play(true)' onclick='timer.play(true);' /><br/>
+		<input type='button' value='timer.pause()' onclick='timer.pause();' /><br/>
+		<input type='button' value='timer.toggle()' onclick='timer.toggle();' /><br/>
+		<input type='button' value='timer.toggle(true)' onclick='timer.toggle(true);' />
 	</div>
-
+	
 	<div>
-		<p>timer2 has been played <span class='two'>0</span> times.</p>
-		
-		<input type='button' value='timer2.play()' onclick='timer2.play();' /><br/>
-		<input type='button' value='timer2.pause()' onclick='timer2.pause();' /><br/>
-		<input type='button' value='timer2.toggle()' onclick='timer2.toggle();' /><br/>
-		<input type='button' value='timer2.reset()' onclick='timer2.reset();' /><br/>
-		<input type='button' value='timer2.once()' onclick='timer2.once();' /><br/>
-		<input type='button' value='timer2.once(5000)' onclick='timer2.once(5000);' /><br/>
-		<input type='button' value='timer2.set({time:1000})' onclick='timer2.set({time:1000});' /><br/>
-		<input type='button' value='timer2.set({time:2000})' onclick='timer2.set({time:2000});' />
+		<input type='button' value='timer.reset()' onclick='timer.reset();' /><br/>
+		<input type='button' value='timer.once()' onclick='timer.once();' /><br/>
+		<input type='button' value='timer.once(5000)' onclick='timer.once(5000);' /><br/>
+		<input type='button' value='timer.set({time:1000})' onclick='timer.set({time:1000});' /><br/>
+		<input type='button' value='timer.set({time:5000})' onclick='timer.set({time:5000});' />	
 	</div>
 
 	<br/><br/>
 
-	<p>
 		<pre>
-var count1 = 0;
-var timer1 = 
+var count = 0;
+var timer = 
 	$.timer(
 		function() {
-			count1++;
-			$('.one').html(count1);
+			count++;
+			$('.count').html(count);
 		},
 		1000,
 		true
-	);
-
-
-var count2 = 0;
-var timer2 =
-	$.timer().set({
-		action: function() {
-			count2++;
-			$('.two').html(count2);				
-		},
-		time: 2000
-	}).play();		</pre>
-	</p>
+	);		</pre>
 	
-	<script type="text/javascript">
-	
-		var count1 = 0;
-		var timer1 = $.timer(
+	<script type="text/javascript">	
+		var count = 0;
+		var timer = $.timer(
 			function() {
-				count1++;
-				$('.one').html(count1);
+				count++;
+				$('.count').html(count);
 			},
 			1000,
 			true
-		);
-		
-		
-		var count2 = 0;
-		var timer2 = $.timer().set({
-			action: function() {
-				count2++;
-				$('.two').html(count2);				
-			},
-			time: 2000
-		}).play();
-	
+		);	
 	</script>
 	
 </body>

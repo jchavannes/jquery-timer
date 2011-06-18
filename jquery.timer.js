@@ -57,41 +57,56 @@
 			window.setTimeout(function() {timer.action();}, time);
 	 		return this;
 	 	};
-		this.play = function() {
+		this.play = function(reset) {
 			if(!this.active) {
+				if(reset) {
+					this.setTimer();
+				} else {
+		            this.setTimer(this.remaining);
+		        }
 				this.active = true;
-				this.setTimer();
-			}
+		    }
 			return this;
 		};
 		this.pause = function() {
 			this.active = false;
 			this.clearTimer();
+			this.remaining = this.remaining - (new Date() - this.last);
 			return this;
 		};
-		this.stop = this.pause;
-		this.toggle = function() {
+		this.stop = function() {
+			this.active = false;
+			this.clearTimer();
+			this.remaining = this.intervalTime;
+			return this;
+		};
+		this.toggle = function(reset) {
 			if(this.active) {
 				this.pause();
+			} else if(reset) {
+				this.play(true);
 			} else {
-				this.play();
+				this.play(); 
 			}
 			return this;
 		};
 		this.reset = function() {
-			this.pause().play();
+			this.active = false;
+			this.play(true);
 			return this;
 		};
 		this.clearTimer = function() {
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
+			var timer = this;
 	 	 	if(typeof this.action != 'function') {return;}
 	 	 	if(isNaN(time)) {
 	 	 		time = this.intervalTime;
 	 	 	}
-			var timer = this;
 			this.clearTimer();
+		 	this.remaining = time;
+	 	 	this.last = new Date();
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
 	 	this.go = function() {
