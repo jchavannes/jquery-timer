@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2011 Jason Chavannes <jason.chavannes@gmail.com>
  *
- * http://code.google.com/p/jquery-timer/
+ * http://jchavannes.com/jquery-timer
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -39,12 +39,8 @@
 	 	 	 	};
  	 			func = func.action;
 	 	 	}
-	 	 	if(typeof func == 'function') {
-			 	this.action = func;
-			}
-		 	if(!isNaN(time)) {
-			 	this.intervalTime = time;
-		 	}
+	 	 	if(typeof func == 'function') {this.action = func;}
+		 	if(!isNaN(time)) {this.intervalTime = time;}
 		 	if(autostart && !this.active) {
 			 	this.active = true;
 			 	this.setTimer();
@@ -59,19 +55,16 @@
 	 	};
 		this.play = function(reset) {
 			if(!this.active) {
-				if(reset) {
-					this.setTimer();
-				} else {
-		            this.setTimer(this.remaining);
-		        }
+				if(reset) {this.setTimer();}
+				else {this.setTimer(this.remaining);}
 				this.active = true;
-		    }
+			}
 			return this;
 		};
 		this.pause = function() {
 			this.active = false;
 			this.clearTimer();
-			this.remaining = this.remaining - (new Date() - this.last);
+			this.remaining -= new Date() - this.last;
 			return this;
 		};
 		this.stop = function() {
@@ -81,13 +74,9 @@
 			return this;
 		};
 		this.toggle = function(reset) {
-			if(this.active) {
-				this.pause();
-			} else if(reset) {
-				this.play(true);
-			} else {
-				this.play(); 
-			}
+			if(this.active) {this.pause();}
+			else if(reset) {this.play(true);}
+			else {this.play();}
 			return this;
 		};
 		this.reset = function() {
@@ -99,11 +88,9 @@
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
-			var timer = this;
 	 	 	if(typeof this.action != 'function') {return;}
-	 	 	if(isNaN(time)) {
-	 	 		time = this.intervalTime;
-	 	 	}
+	 	 	if(isNaN(time)) {time = this.intervalTime;}
+			var timer = this;
 			this.clearTimer();
 		 	this.remaining = time;
 	 	 	this.last = new Date();
