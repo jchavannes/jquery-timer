@@ -32,11 +32,7 @@
 	 		this.init = true;
 	 	 	if(typeof func == 'object') {
 		 	 	var paramList = ['autostart', 'time'];
-	 	 	 	for(var arg in paramList) {
-		 	 		if(func[paramList[arg]] != undefined) {
-		 	 			eval(paramList[arg] + " = func[paramList[arg]]");
-		 	 		}
-	 	 	 	};
+	 	 	 	for(var arg in paramList) {if(func[paramList[arg]] != undefined) {eval(paramList[arg] + " = func[paramList[arg]]");}};
  	 			func = func.action;
 	 	 	}
 	 	 	if(typeof func == 'function') {this.action = func;}
@@ -62,15 +58,17 @@
 			return this;
 		};
 		this.pause = function() {
-			this.active = false;
-			this.clearTimer();
-			this.remaining -= new Date() - this.last;
+			if(this.active) {
+				this.active = false;
+				this.remaining -= new Date() - this.last;
+				this.clearTimer();
+			}
 			return this;
 		};
 		this.stop = function() {
 			this.active = false;
-			this.clearTimer();
 			this.remaining = this.intervalTime;
+			this.clearTimer();
 			return this;
 		};
 		this.toggle = function(reset) {
@@ -88,12 +86,12 @@
 			window.clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
+			var timer = this;
 	 	 	if(typeof this.action != 'function') {return;}
 	 	 	if(isNaN(time)) {time = this.intervalTime;}
-			var timer = this;
-			this.clearTimer();
 		 	this.remaining = time;
 	 	 	this.last = new Date();
+			this.clearTimer();
 			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
 		};
 	 	this.go = function() {
