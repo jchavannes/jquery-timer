@@ -1,0 +1,77 @@
+body {
+    font-family: Arial;
+    font-size: 12px;
+}
+label {
+    display: inline-block;
+    *display:inline;
+    zoom:1;
+    width: 30px;
+}
+input[type=button] {
+    padding: 4px 10px;
+    margin: 5px 0 0;
+    font-size: 14px;
+    width: 200px;
+    color: #3a3a3a;
+}
+input[type=button]:hover {
+    cursor: pointer;
+    color: #000;
+}
+input[type=button].break {
+    margin-top: 15px;
+}
+a {
+    color: #444;
+    text-decoration: underline;
+}
+a:hover {
+    color: #000;
+    cursor: pointer;
+}
+p {
+}
+pre {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    width: 490px;
+    padding: 5px;
+}
+div {
+    display: inline-block;
+    *display:inline;
+    zoom:1;
+    width: 300px;
+}
+.count {
+    font-weight: bold;
+    font-size: 20px;
+    padding: 0 2px;
+}
+.galleryImages {
+    position: relative;
+    width: 200px;
+    height: 133px;
+    overflow: hidden;
+}
+.galleryImages img {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#counter {
+    font-weight: 500;
+    font-size: 20px;
+    padding: 0 2px;
+}
+.example-four {
+    display: inline-block;
+    *display:inline;zoom:1;
+    width: 250px;
+    margin-bottom: 10px;
+}
+#example2form, .example-three {
+    margin-bottom: 40px;
+}
