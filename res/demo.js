@@ -140,9 +140,12 @@ function pad(number, length) {
     while (str.length < length) {str = '0' + str;}
     return str;
 }
-function formatTime(time) {
+function formatTime(time, parts) {
+    if (!parts)
+        parts = 3;
+    time = time / 10;
     var min = parseInt(time / 6000),
-        sec = parseInt(time / 100) - (min * 60),
-        hundredths = pad(time - (sec * 100) - (min * 6000), 2);
-    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+            sec = parseInt(time / 100) - (min * 60),
+            hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+    return (min > 0 ? pad(min, 2) : "00") + (parts > 1 ? ":" + pad(sec, 2) : '') + (parts > 2 ? ":" + hundredths : '');
 }
