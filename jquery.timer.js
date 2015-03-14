@@ -36,19 +36,19 @@
      * @param {function | {
      *   action: function,
      *   time: int=,
-     *   autoStart: boolean=
+     *   autostart: boolean=
      * }} action
      * @param {int=} time
-     * @param {boolean=} autoStart
+     * @param {boolean=} autostart
      * @returns {Timer}
      */
-    function Timer(action, time, autoStart) {
+    function Timer(action, time, autostart) {
 
         if (typeof this == "function" || this.init) {
-            return new Timer(action, time, autoStart);
+            return new Timer(action, time, autostart);
         }
 
-        this.set(action, time, autoStart);
+        this.set(action, time, autostart);
 
         return this;
 
@@ -60,13 +60,13 @@
      * @param {function | {
      *   action: function,
      *   time: int=,
-     *   autoStart: boolean=
+     *   autostart: boolean=
      * }} action
      * @param {int=} time
-     * @param {boolean=} autoStart
+     * @param {boolean=} autostart
      * @returns {Timer}
      */
-    Timer.prototype.set = function(action, time, autoStart) {
+    Timer.prototype.set = function(action, time, autostart) {
 
         this.init = true;
 
@@ -76,8 +76,8 @@
                 time = action.time;
             }
 
-            if (action.autoStart) {
-                autoStart = action.autoStart;
+            if (action.autostart) {
+                autostart = action.autostart;
             }
 
             action = action.action;
@@ -92,12 +92,22 @@
             this.intervalTime = time;
         }
 
-        if (autoStart && !this.isActive) {
+        if (autostart && this.isReadyToStart()) {
             this.isActive = true;
             this.setTimer();
         }
 
         return this;
+
+    };
+
+    Timer.prototype.isReadyToStart = function() {
+
+        var notActive = !this.active;
+        var hasAction = typeof this.action == "function";
+        var hasTime   = !isNaN(this.intervalTime);
+
+        return notActive && hasAction && hasTime;
 
     };
 
@@ -129,7 +139,7 @@
      */
     Timer.prototype.play = function(reset) {
 
-        if (!this.isActive) {
+        if (this.isReadyToStart()) {
 
             if (reset) {
                 this.setTimer();
@@ -224,10 +234,6 @@
     Timer.prototype.setTimer = function(time) {
 
         var timer = this;
-
-        if (typeof this.action != "function") {
-            return this;
-        }
 
         if (isNaN(time)) {
             time = this.intervalTime;
