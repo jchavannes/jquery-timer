@@ -44,11 +44,7 @@
      */
     function Timer(action, time, autoStart) {
 
-        if (typeof this == "function") {
-            return new Timer(action, time, autoStart);
-        }
-
-        if (this.init) {
+        if (typeof this == "function" || this.init) {
             return new Timer(action, time, autoStart);
         }
 
