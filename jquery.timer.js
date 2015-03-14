@@ -27,85 +27,249 @@
  */
 
 ;(function($) {
-	$.timer = function(func, time, autostart) {	
-	 	this.set = function(func, time, autostart) {
-	 		this.init = true;
-	 	 	if(typeof func == 'object') {
-		 	 	var paramList = ['autostart', 'time'];
-	 	 	 	for(var arg in paramList) {if(func[paramList[arg]] != undefined) {eval(paramList[arg] + " = func[paramList[arg]]");}};
- 	 			func = func.action;
-	 	 	}
-	 	 	if(typeof func == 'function') {this.action = func;}
-		 	if(!isNaN(time)) {this.intervalTime = time;}
-		 	if(autostart && !this.isActive) {
-			 	this.isActive = true;
-			 	this.setTimer();
-		 	}
-		 	return this;
-	 	};
-	 	this.once = function(time) {
-			var timer = this;
-	 	 	if(isNaN(time)) {time = 0;}
-			window.setTimeout(function() {timer.action();}, time);
-	 		return this;
-	 	};
-		this.play = function(reset) {
-			if(!this.isActive) {
-				if(reset) {this.setTimer();}
-				else {this.setTimer(this.remaining);}
-				this.isActive = true;
-			}
-			return this;
-		};
-		this.pause = function() {
-			if(this.isActive) {
-				this.isActive = false;
-				this.remaining -= new Date() - this.last;
-				this.clearTimer();
-			}
-			return this;
-		};
-		this.stop = function() {
-			this.isActive = false;
-			this.remaining = this.intervalTime;
-			this.clearTimer();
-			return this;
-		};
-		this.toggle = function(reset) {
-			if(this.isActive) {this.pause();}
-			else if(reset) {this.play(true);}
-			else {this.play();}
-			return this;
-		};
-		this.reset = function() {
-			this.isActive = false;
-			this.play(true);
-			return this;
-		};
-		this.clearTimer = function() {
-			window.clearTimeout(this.timeoutObject);
-		};
-	 	this.setTimer = function(time) {
-			var timer = this;
-	 	 	if(typeof this.action != 'function') {return;}
-	 	 	if(isNaN(time)) {time = this.intervalTime;}
-		 	this.remaining = time;
-	 	 	this.last = new Date();
-			this.clearTimer();
-			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
-		};
-	 	this.go = function() {
-	 		if(this.isActive) {
-				try { this.action(); }
-	 			finally { this.setTimer(); }
-	 		}
-	 	};
-	 	
-	 	if(this.init) {
-	 		return new $.timer(func, time, autostart);
-	 	} else {
-			this.set(func, time, autostart);
-	 		return this;
-	 	}
-	};
+
+    $.timer = Timer;
+
+    /**
+     * First parameter can either be a function or an object of parameters.
+     *
+     * @param {function | {
+     *   action: function,
+     *   time: int=,
+     *   autoStart: boolean=
+     * }} action
+     * @param {int=} time
+     * @param {boolean=} autoStart
+     * @returns {Timer}
+     */
+    function Timer(action, time, autoStart) {
+
+        if (typeof this == "function") {
+            return new Timer(action, time, autoStart);
+        }
+
+        if (this.init) {
+            return new Timer(action, time, autoStart);
+        }
+
+        this.set(action, time, autoStart);
+
+        return this;
+
+    }
+
+    /**
+     * @see Timer
+     *
+     * @param {function | {
+     *   action: function,
+     *   time: int=,
+     *   autoStart: boolean=
+     * }} action
+     * @param {int=} time
+     * @param {boolean=} autoStart
+     * @returns {Timer}
+     */
+    Timer.prototype.set = function(action, time, autoStart) {
+
+        this.init = true;
+
+        if (typeof action == "object") {
+
+            if (action.time) {
+                time = action.time;
+            }
+
+            if (action.autoStart) {
+                autoStart = action.autoStart;
+            }
+
+            action = action.action;
+
+        }
+
+        if (typeof action == "function") {
+            this.action = action;
+        }
+
+        if (!isNaN(time)) {
+            this.intervalTime = time;
+        }
+
+        if (autoStart && !this.isActive) {
+            this.isActive = true;
+            this.setTimer();
+        }
+
+        return this;
+
+    };
+
+    /**
+     * @param {int=} time
+     * @returns {Timer}
+     */
+    Timer.prototype.once = function(time) {
+
+        var timer = this;
+
+        if (isNaN(time)) {
+            timer.action();
+            return this;
+        }
+
+        window.setTimeout(fnTimeout, time);
+        return this;
+
+        function fnTimeout() {
+            timer.action();
+        }
+
+    };
+
+    /**
+     * @param {boolean=} reset
+     * @returns {Timer}
+     */
+    Timer.prototype.play = function(reset) {
+
+        if (!this.isActive) {
+
+            if (reset) {
+                this.setTimer();
+            }
+            else {
+                this.setTimer(this.remaining);
+            }
+
+            this.isActive = true;
+
+        }
+
+        return this;
+
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.pause = function() {
+
+        if (this.isActive) {
+
+            this.isActive   = false;
+            this.remaining -= new Date() - this.last;
+
+            this.clearTimer();
+
+        }
+
+        return this;
+
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.stop = function() {
+
+        this.isActive  = false;
+        this.remaining = this.intervalTime;
+
+        this.clearTimer();
+
+        return this;
+
+    };
+
+    /**
+     * @param {boolean=} reset
+     * @returns {Timer}
+     */
+    Timer.prototype.toggle = function(reset) {
+
+        if (this.isActive) {
+            this.pause();
+        }
+        else if (reset) {
+            this.play(true);
+        }
+        else {
+            this.play();
+        }
+
+        return this;
+
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.reset = function() {
+
+        this.isActive = false;
+        this.play(true);
+
+        return this;
+
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.clearTimer = function() {
+        window.clearTimeout(this.timeoutObject);
+        return this;
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.setTimer = function(time) {
+
+        var timer = this;
+
+        if (typeof this.action != "function") {
+            return this;
+        }
+
+        if (isNaN(time)) {
+            time = this.intervalTime;
+        }
+
+        this.remaining = time;
+        this.last      = new Date();
+
+        this.clearTimer();
+
+        this.timeoutObject = window.setTimeout(fnTimeout, time);
+
+        return this;
+
+        function fnTimeout() {
+            timer.execute();
+        }
+
+    };
+
+    /**
+     * @returns {Timer}
+     */
+    Timer.prototype.execute = function() {
+
+        if (this.isActive) {
+
+            try {
+                this.action();
+            }
+            finally {
+                this.setTimer();
+            }
+
+        }
+
+        return this;
+
+    };
+
 })(jQuery);
