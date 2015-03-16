@@ -35,7 +35,7 @@ p {
 pre {
     background-color: #eee;
     border: 1px solid #ccc;
-    width: 490px;
+    width: 600px;
     padding: 5px;
 }
 div {
@@ -72,6 +72,6 @@ div {
     width: 250px;
     margin-bottom: 10px;
 }
-#example2form, .example-three {
+.example-three {
     margin-bottom: 40px;
 }

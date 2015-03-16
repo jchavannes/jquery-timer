@@ -15,22 +15,33 @@
     <p>Project home: <a href="http://jchavannes.com/jquery-timer" target="_blank">http://jchavannes.com/jquery-timer</a></p>
     <p><a href="res/demo.js" target="_blank">View Source</a></p>
 
-    <hr/><h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
-    <span id="stopwatch">00:00:00</span>
+    <hr/><h3 style='margin-top:20px;'>Example 1 - Stopwatch</h3>
     <p>
-        <input type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />
+        <span id="stopwatch">00:00:00</span><br/>
+        <input type='button' value='Example1.toggle()' onclick='Example1.toggle()' />
+        <input type='button' value='Example1.stop()' onclick='Example1.stop()' />
     </p>
-    <br/>
+    <pre style='padding:10px 15px;'>
+var Example1 = $.stopWatch(function () {
+    var output = this.getFormattedTime() + " - &lt;i&gt;(" + this.getTime() + " milliseconds)&lt;/i&gt;";
+    $('#stopwatch').html(output);
+});</pre>
     <br/>
 
-    <h3>Example 2 - Countdown Timer</h3>
-    <span id="countdown">05:00:00</span>
+    <h3>Example 2 - Countdown</h3>
     <form id="example2form">
-        <input type='button' value='Play/Pause' onclick='Example2.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example2.resetCountdown();' />
-        <input type='text' name='startTime' value='300' style='width:30px;' />
+        <span id="countdown">05:00:00</span><br/>
+        <input type='button' value='Example2.toggle()' onclick='Example2.toggle()' />
+        <input type='button' value='Example2.stop()' onclick='Example2.stop()' />
     </form>
+    <pre style='padding:10px 15px;'>
+var Example2 = $.countDown(function() {
+    $('#countdown').html(this.getFormattedTime());
+    if (this.isFinished()) {
+        alert('Example 2: Countdown complete!');
+    }
+}, 20);</pre>
+    <br/>
 
     <h3>Example 3 - Slideshow (preserves time remaining when paused)</h3>
     <div class="galleryImages">
@@ -51,9 +62,9 @@
         <img src='res/img/15.jpg' alt='' />
         <img src='res/img/16.jpg' alt='' />
         <img src='res/img/17.jpg' alt='' />
-    </div><br/>
-    <div id="timeRemaining"><br/></div>
+    </div>
     <p class="example-three">
+        <span id="timeRemaining"><br/></span>
         <input type='button' value='Play / Pause' onclick='Example3.toggleGallery();' />
     </p>
 

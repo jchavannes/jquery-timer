@@ -28,7 +28,14 @@
 
 ;(function($) {
 
-    $.timer = Timer;
+    $.timer     = Timer;
+    $.stopWatch = StopWatch;
+    $.countDown = CountDown;
+
+    $.timerUtil = {
+        pad: pad,
+        formatTime: formatTime
+    };
 
     /**
      * First parameter can either be a function or an object of parameters.
@@ -273,5 +280,207 @@
         return this;
 
     };
+
+    /**
+     * @param {function=} updateFunction
+     */
+    function StopWatch(updateFunction) {
+
+        if (typeof this == "function" || this.init) {
+            return new StopWatch(updateFunction);
+        }
+
+        this.set(updateFunction);
+
+        return this;
+    }
+
+    /**
+     * @param {function=} updateFunction
+     */
+    StopWatch.prototype.set = function(updateFunction) {
+
+        if (typeof updateFunction != "function") {
+            return;
+        }
+
+        this.init = true;
+        this.updateFunction = updateFunction;
+        this.startTime = new Date().getTime();
+        this.pauseStart = 0;
+        this.setInterval();
+
+    };
+
+    StopWatch.prototype.timeUpdate = function() {
+
+        if (this.startTime == 0) {
+            this.timePassed = 0;
+        }
+        else {
+            this.timePassed = new Date().getTime() - this.startTime;
+        }
+
+        this.updateFunction.apply(this);
+
+    };
+
+    /**
+     * @returns {int}
+     */
+    StopWatch.prototype.getTime = function() {
+        return this.timePassed > 0 ? this.timePassed : 0;
+    };
+
+    /**
+     * @returns {string}
+     */
+    StopWatch.prototype.getFormattedTime = function() {
+        return formatTime(this.getTime());
+    };
+
+    StopWatch.prototype.stop = function() {
+        this.clearInterval();
+        this.startTime = 0;
+        this.timeUpdate();
+    };
+
+    StopWatch.prototype.pause = function() {
+        this.clearInterval();
+        this.pauseStart = new Date().getTime();
+        this.timeUpdate();
+    };
+
+    StopWatch.prototype.toggle = function() {
+        if (this.pauseStart  || this.startTime == 0) {
+            this.start();
+        }
+        else {
+            this.pause();
+        }
+    };
+
+    StopWatch.prototype.setInterval = function() {
+
+        this.clearInterval();
+        this.interval = setInterval(interval, 1000/30);
+
+        var self = this;
+        function interval() {
+            self.timeUpdate();
+        }
+
+    };
+
+    StopWatch.prototype.clearInterval = function() {
+        clearInterval(this.interval);
+    };
+
+    StopWatch.prototype.start = function() {
+
+        if (!this.startTime) {
+            this.startTime = new Date().getTime();
+        }
+        else if (this.pauseStart) {
+            this.startTime += (new Date().getTime() - this.pauseStart);
+            this.pauseStart = 0;
+        }
+        else {
+            return;
+        }
+
+        this.setInterval();
+
+    };
+
+    /**
+     * @param {function=} updateFunction
+     * @param {int=} countdown
+     */
+    function CountDown(updateFunction, countdown) {
+
+        if (typeof this == "function" || this.init) {
+            return new CountDown(updateFunction, countdown);
+        }
+
+        this.set(updateFunction, countdown);
+
+        return this;
+    }
+
+    CountDown.prototype = new StopWatch();
+
+    /**
+     * @param {int} countdown
+     */
+    CountDown.prototype.setCountdown = function(countdown) {
+        this.countdown = countdown * 1000;
+    };
+
+    /**
+     * @param {function=} updateFunction
+     * @param {int=} countdown
+     */
+    CountDown.prototype.set = function(updateFunction, countdown) {
+        this.setCountdown(countdown);
+        StopWatch.prototype.set.apply(this, [updateFunction]);
+    };
+
+    /**
+     * @returns {int}
+     */
+    CountDown.prototype.getTime = function() {
+
+        var time = this.countdown - StopWatch.prototype.getTime.apply(this);
+
+        if (time <= 0) {
+            time = 0;
+            this.finished = true;
+            this.startTime = 0;
+            this.clearInterval();
+        }
+        else {
+            this.finished = false;
+        }
+
+        return time;
+
+    };
+
+    /**
+     * @returns {boolean}
+     */
+    CountDown.prototype.isFinished = function() {
+        return this.finished;
+    };
+
+    CountDown.prototype.start = function() {
+        if (this.getTime() == 0) {
+            this.startTime = 0;
+        }
+        StopWatch.prototype.start.apply(this);
+    };
+
+    /**
+     * @param {int} number
+     * @param {int} length
+     * @returns {string}
+     */
+    function pad(number, length) {
+        var str = '' + number;
+        while (str.length < length) {str = '0' + str;}
+        return str;
+    }
+
+    /**
+     * @param {int} time (in milliseconds)
+     * @returns {string}
+     */
+    function formatTime(time) {
+        var min = parseInt(time / 60000),
+            sec = parseInt(time / 1000) - (min * 60),
+            hundredths = pad(parseInt(time / 10 - (sec * 100) - (min * 6000)), 2);
+        return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+    }
 
 })(jQuery);
