@@ -29,8 +29,8 @@
 ;(function($) {
 
     $.timer     = Timer;
-    $.stopWatch = StopWatch;
-    $.countDown = CountDown;
+    $.stopwatch = Stopwatch;
+    $.countdown = Countdown;
 
     $.timerUtil = {
         pad: pad,
@@ -284,10 +284,10 @@
     /**
      * @param {function=} updateFunction
      */
-    function StopWatch(updateFunction) {
+    function Stopwatch(updateFunction) {
 
         if (typeof this == "function" || this.init) {
-            return new StopWatch(updateFunction);
+            return new Stopwatch(updateFunction);
         }
 
         this.set(updateFunction);
@@ -298,7 +298,7 @@
     /**
      * @param {function=} updateFunction
      */
-    StopWatch.prototype.set = function(updateFunction) {
+    Stopwatch.prototype.set = function(updateFunction) {
 
         if (typeof updateFunction != "function") {
             return;
@@ -312,7 +312,7 @@
 
     };
 
-    StopWatch.prototype.timeUpdate = function() {
+    Stopwatch.prototype.timeUpdate = function() {
 
         if (this.startTime == 0) {
             this.timePassed = 0;
@@ -328,30 +328,30 @@
     /**
      * @returns {int}
      */
-    StopWatch.prototype.getTime = function() {
+    Stopwatch.prototype.getTime = function() {
         return this.timePassed > 0 ? this.timePassed : 0;
     };
 
     /**
      * @returns {string}
      */
-    StopWatch.prototype.getFormattedTime = function() {
+    Stopwatch.prototype.getFormattedTime = function() {
         return formatTime(this.getTime());
     };
 
-    StopWatch.prototype.stop = function() {
+    Stopwatch.prototype.stop = function() {
         this.clearInterval();
         this.startTime = 0;
         this.timeUpdate();
     };
 
-    StopWatch.prototype.pause = function() {
+    Stopwatch.prototype.pause = function() {
         this.clearInterval();
         this.pauseStart = new Date().getTime();
         this.timeUpdate();
     };
 
-    StopWatch.prototype.toggle = function() {
+    Stopwatch.prototype.toggle = function() {
         if (this.pauseStart  || this.startTime == 0) {
             this.start();
         }
@@ -360,7 +360,7 @@
         }
     };
 
-    StopWatch.prototype.setInterval = function() {
+    Stopwatch.prototype.setInterval = function() {
 
         this.clearInterval();
         this.interval = setInterval(interval, 1000/30);
@@ -372,11 +372,11 @@
 
     };
 
-    StopWatch.prototype.clearInterval = function() {
+    Stopwatch.prototype.clearInterval = function() {
         clearInterval(this.interval);
     };
 
-    StopWatch.prototype.start = function() {
+    Stopwatch.prototype.start = function() {
 
         if (!this.startTime) {
             this.startTime = new Date().getTime();
@@ -397,10 +397,10 @@
      * @param {function=} updateFunction
      * @param {int=} countdown
      */
-    function CountDown(updateFunction, countdown) {
+    function Countdown(updateFunction, countdown) {
 
         if (typeof this == "function" || this.init) {
-            return new CountDown(updateFunction, countdown);
+            return new Countdown(updateFunction, countdown);
         }
 
         this.set(updateFunction, countdown);
@@ -408,12 +408,12 @@
         return this;
     }
 
-    CountDown.prototype = new StopWatch();
+    Countdown.prototype = new Stopwatch();
 
     /**
      * @param {int} countdown
      */
-    CountDown.prototype.setCountdown = function(countdown) {
+    Countdown.prototype.setCountdown = function(countdown) {
         this.countdown = countdown * 1000;
     };
 
@@ -421,17 +421,17 @@
      * @param {function=} updateFunction
      * @param {int=} countdown
      */
-    CountDown.prototype.set = function(updateFunction, countdown) {
+    Countdown.prototype.set = function(updateFunction, countdown) {
         this.setCountdown(countdown);
-        StopWatch.prototype.set.apply(this, [updateFunction]);
+        Stopwatch.prototype.set.apply(this, [updateFunction]);
     };
 
     /**
      * @returns {int}
      */
-    CountDown.prototype.getTime = function() {
+    Countdown.prototype.getTime = function() {
 
-        var time = this.countdown - StopWatch.prototype.getTime.apply(this);
+        var time = this.countdown - Stopwatch.prototype.getTime.apply(this);
 
         if (time <= 0) {
             time = 0;
@@ -450,15 +450,15 @@
     /**
      * @returns {boolean}
      */
-    CountDown.prototype.isFinished = function() {
+    Countdown.prototype.isFinished = function() {
         return this.finished;
     };
 
-    CountDown.prototype.start = function() {
+    Countdown.prototype.start = function() {
         if (this.getTime() == 0) {
             this.startTime = 0;
         }
-        StopWatch.prototype.start.apply(this);
+        Stopwatch.prototype.start.apply(this);
     };
 
     /**
