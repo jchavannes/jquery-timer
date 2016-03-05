@@ -44,7 +44,7 @@
      */
     function Timer(action, time, autostart) {
 
-        if (typeof this == "function" || this.init) {
+        if (this.constructor != Timer || this.init) {
             return new Timer(action, time, autostart);
         }
 

@@ -79,7 +79,7 @@ PlayTest.prototype.start = function() {
     timer.set(function() {
         this.stop();
         self.end("PlayTest", true);
-    });
+    }, 1000);
     timer.play();
 };
 testManager.add(PlayTest);
