@@ -46,7 +46,7 @@
 	 	this.once = function(time) {
 			var timer = this;
 	 	 	if(isNaN(time)) {time = 0;}
-			window.setTimeout(function() {timer.action();}, time);
+			setTimeout(function() {timer.action();}, time);
 	 		return this;
 	 	};
 		this.play = function(reset) {
@@ -83,7 +83,7 @@
 			return this;
 		};
 		this.clearTimer = function() {
-			window.clearTimeout(this.timeoutObject);
+			clearTimeout(this.timeoutObject);
 		};
 	 	this.setTimer = function(time) {
 			var timer = this;
@@ -92,7 +92,7 @@
 		 	this.remaining = time;
 	 	 	this.last = new Date();
 			this.clearTimer();
-			this.timeoutObject = window.setTimeout(function() {timer.go();}, time);
+			this.timeoutObject = setTimeout(function() {timer.go();}, time);
 		};
 	 	this.go = function() {
 	 		if(this.isActive) {
