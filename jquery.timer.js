@@ -124,7 +124,7 @@
             return this;
         }
 
-        window.setTimeout(fnTimeout, time);
+        setTimeout(fnTimeout, time);
         return this;
 
         function fnTimeout() {
@@ -224,7 +224,7 @@
      * @returns {Timer}
      */
     Timer.prototype.clearTimer = function() {
-        window.clearTimeout(this.timeoutObject);
+        clearTimeout(this.timeoutObject);
         return this;
     };
 
@@ -244,7 +244,7 @@
 
         this.clearTimer();
 
-        this.timeoutObject = window.setTimeout(fnTimeout, time);
+        this.timeoutObject = setTimeout(fnTimeout, time);
 
         return this;
 
@@ -273,5 +273,5 @@
         return this;
 
     };
-
+    
 })(jQuery);
