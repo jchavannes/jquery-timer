@@ -19,7 +19,13 @@ TestManager.prototype.run = function() {
     var self = this;
     var timeout = 10;
     this.timeout = setTimeout(function() {
-        console.log("FAILURE: Tests timed out after " + timeout + " seconds. Exiting.");
+        if (self.finished === self.tests.length) {
+            console.log(self.finishedSuccessfully + " of " + self.finished + " tests successful.");
+            if (self.finishedSuccessfully === self.finished) {
+                process.exit(0);
+            }
+        }
+        console.log("FAILURE: Tests did not finish successfully.");
         process.exit(1);
     }, timeout * 1000);
     for (var i = 0; i < this.tests.length; i++) {
@@ -48,16 +54,6 @@ TestManager.prototype.end = function(name, success) {
     }
     else {
       console.log("Failed: " + name);
-    }
-    if (this.finished === this.tests.length) {
-        console.log(this.finishedSuccessfully + " of " + this.finished + " tests successful.");
-        clearTimeout(this.timeout);
-        if (this.finishedSuccessfully === this.finished) {
-            process.exit(0);
-        }
-        else {
-            process.exit(1);
-        }
     }
 };
 
