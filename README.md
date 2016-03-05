@@ -1,5 +1,7 @@
 # jQuery Timer
 
+[![Build Status](https://travis-ci.org/jchavannes/jquery-timer.svg?branch=master)](https://travis-ci.org/jchavannes/jquery-timer)
+
 Basically setTimeout with more options.
 
 View demo: [http://jchavannes.com/jquery-timer/demo](http://jchavannes.com/jquery-timer/demo)  
