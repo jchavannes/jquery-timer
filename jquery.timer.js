@@ -283,22 +283,24 @@
 
     /**
      * @param {function=} updateFunction
+     * @param {boolean=} autostart
      */
-    function Stopwatch(updateFunction) {
+    function Stopwatch(updateFunction, autostart) {
 
         if (typeof this == "function" || this.init) {
-            return new Stopwatch(updateFunction);
+            return new Stopwatch(updateFunction, autostart);
         }
 
-        this.set(updateFunction);
+        this.set(updateFunction, autostart);
 
         return this;
     }
 
     /**
      * @param {function=} updateFunction
+     * @param {boolean=} autostart
      */
-    Stopwatch.prototype.set = function(updateFunction) {
+    Stopwatch.prototype.set = function(updateFunction, autostart) {
 
         if (typeof updateFunction != "function") {
             return;
@@ -306,9 +308,13 @@
 
         this.init = true;
         this.updateFunction = updateFunction;
-        this.startTime = new Date().getTime();
+        this.startTime = 0;
         this.pauseStart = 0;
-        this.setInterval();
+
+        if (autostart) {
+            this.startTime = new Date().getTime();
+            this.setInterval();
+        }
 
     };
 
