@@ -41,3 +41,7 @@ timer.once(time);  // Number. Defaults to 0.
 timer.isActive  // Returns true if timer is running
 timer.remaining // Remaining time when paused
 ```
+
+## License
+
+See the [LICENSE](LICENSE.md) file for license rights and limitations (MIT).
