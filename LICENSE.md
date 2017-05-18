@@ -1,8 +1,6 @@
-jquery.timer.js
+MIT License
 
 Copyright (c) 2011 Jason Chavannes <jason.chavannes@gmail.com>
-
-http://jchavannes.com/jquery-timer
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
