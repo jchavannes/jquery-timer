@@ -10,7 +10,7 @@ label {
 }
 input[type=button] {
     padding: 4px 10px;
-    margin: 5px 0 0;
+    margin: 7px 7px 0 0;
     font-size: 14px;
     width: 200px;
     color: #3a3a3a;
@@ -30,13 +30,15 @@ a:hover {
     color: #000;
     cursor: pointer;
 }
-p {
+hr {
+    width: 650px;
+    margin: 12px 0;
 }
 pre {
     background-color: #eee;
     border: 1px solid #ccc;
-    width: 490px;
-    padding: 5px;
+    width: 620px;
+    padding: 10px 15px;
 }
 div {
     display: inline-block;
@@ -72,6 +74,6 @@ div {
     width: 250px;
     margin-bottom: 10px;
 }
-#example2form, .example-three {
+.example-three {
     margin-bottom: 40px;
 }

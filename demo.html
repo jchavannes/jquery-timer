@@ -15,24 +15,84 @@
     <p>Project home: <a href="http://jchavannes.com/jquery-timer" target="_blank">http://jchavannes.com/jquery-timer</a></p>
     <p><a href="res/demo.js" target="_blank">View Source</a></p>
 
-    <hr/><h3 style='margin-top:20px;'>Example 1 - Stopwatch (counts ups)</h3>
-    <span id="stopwatch">00:00:00</span>
+    <br/>
+
+    <h2>Usage</h2>
+
+    <hr/>
+
+    <h3>Stopwatch</h3>
+
+    <h4>Create a new stopwatch</h4>
+    <p>HTML</p>
+    <pre>&lt;div id='time'&gt;%lt;/div&gt;</pre>
+    <p>Javascript</p>
+    <pre>
+var stopwatch = $.stopwatch(function(watch) {
+    $('#time').html(watch.getFormattedTime();
+});</pre>
+
+    <br/>
+
+    <h2>Examples</h2>
+
+    <hr/>
+
+    <h3 style='margin-top:20px;'>Example 1 - Stopwatch</h3>
     <p>
-        <input type='button' value='Play/Pause' onclick='Example1.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example1.resetStopwatch();' />
+        <span id="stopwatch">00:00:00</span><br/>
+        <input type='button' value='Example1.toggle()' onclick='Example1.toggle()' />
+        <input type='button' value='Example1.stop()' onclick='Example1.stop()' />
     </p>
-    <br/>
+    <pre>
+var Example1 = $.stopwatch(function () {
+    var output = this.getFormattedTime() + " - <i>(" + this.getTime() + " milliseconds)</i>";
+    $("#stopwatch").html(output);
+});</pre>
     <br/>
 
-    <h3>Example 2 - Countdown Timer</h3>
-    <span id="countdown">05:00:00</span>
+    <h3>Example 2 - Countdown</h3>
     <form id="example2form">
-        <input type='button' value='Play/Pause' onclick='Example2.Timer.toggle();' />
-        <input type='button' value='Stop/Reset' onclick='Example2.resetCountdown();' />
-        <input type='text' name='startTime' value='300' style='width:30px;' />
+        <span id="countdown">05:00:00</span><br/>
+        <input type='button' value='Example2.toggle()' onclick='Example2.toggle()' />
+        <input type='button' value='Example2.stop()' onclick='Example2.stop()' />
     </form>
+    <pre>
+var Example2 = $.countdown(function() {
+    $("#countdown").html(this.getFormattedTime());
+    if (this.isFinished()) {
+        alert("Example 2: Countdown complete!");
+    }
+}, 20);</pre>
+    <br/>
 
-    <h3>Example 3 - Slideshow (preserves time remaining when paused)</h3>
+
+    <h3>Example 3 - The original jQuery Timer (basically a suped-up version of setTimeout)</h3>
+    <p>timer has been executed <span id='counter' style=''>0</span> times.</p>
+    <div class='example-four'>
+        <input type='button' value='timer.play()' onclick='timer.play();' /><br/>
+        <input type='button' value='timer.play(true)' onclick='timer.play(true);' /><br/>
+        <input type='button' value='timer.pause()' onclick='timer.pause();' /><br/>
+        <input type='button' value='timer.toggle()' onclick='timer.toggle();' /><br/>
+        <input type='button' value='timer.toggle(true)' onclick='timer.toggle(true);' /><br/>
+        <input type='button' value='timer.stop()' onclick='timer.stop();' />
+    </div>
+    <div class='example-four'>
+        <input type='button' value='timer.reset()' onclick='timer.reset();' /><br/>
+        <input type='button' value='timer.once()' onclick='timer.once();' /><br/>
+        <input type='button' value='timer.once(5000)' onclick='timer.once(5000);' /><br/>
+        <input type='button' value='timer.set({time:1000})' onclick='timer.set({time:1000});' /><br/>
+        <input type='button' value='timer.set({time:5000})' onclick='timer.set({time:5000});' />
+    </div>
+    <br/><pre>
+var count = 0;
+var timer = $.timer(function() {
+    $('#counter').html(++count);
+});
+timer.set({ time : 1000, autostart : true });</pre>
+
+
+    <h3>Example 4 - Slideshow (preserves time remaining when paused)</h3>
     <div class="galleryImages">
         <img src='res/img/1.jpg' alt='' />
         <img src='res/img/2.jpg' alt='' />
@@ -51,34 +111,12 @@
         <img src='res/img/15.jpg' alt='' />
         <img src='res/img/16.jpg' alt='' />
         <img src='res/img/17.jpg' alt='' />
-    </div><br/>
-    <div id="timeRemaining"><br/></div>
+    </div>
     <p class="example-three">
-        <input type='button' value='Play / Pause' onclick='Example3.toggleGallery();' />
+        <span id="timeRemaining"><br/></span>
+        <input type='button' value='Play / Pause' onclick='Example4.toggleGallery();' />
     </p>
 
-    <h3>Example 4 - The Basics (just a suped-up version of setTimeout)</h3>
-    <p>timer has been executed <span id='counter' style=''>0</span> times.</p>
-    <div class='example-four'>
-        <input type='button' value='timer.play()' onclick='timer.play();' /><br/>
-        <input type='button' value='timer.play(true)' onclick='timer.play(true);' /><br/>
-        <input type='button' value='timer.pause()' onclick='timer.pause();' /><br/>
-        <input type='button' value='timer.toggle()' onclick='timer.toggle();' /><br/>
-        <input type='button' value='timer.toggle(true)' onclick='timer.toggle(true);' /><br/>
-        <input type='button' value='timer.stop()' onclick='timer.stop();' />
-    </div>
-    <div class='example-four'>
-        <input type='button' value='timer.reset()' onclick='timer.reset();' /><br/>
-        <input type='button' value='timer.once()' onclick='timer.once();' /><br/>
-        <input type='button' value='timer.once(5000)' onclick='timer.once(5000);' /><br/>
-        <input type='button' value='timer.set({time:1000})' onclick='timer.set({time:1000});' /><br/>
-        <input type='button' value='timer.set({time:5000})' onclick='timer.set({time:5000});' />
-    </div>
-    <br/><pre style='margin-bottom:20px; padding:10px 15px;'>
-var count = 0;
-var timer = $.timer(function() {
-    $('#counter').html(++count);
-});
-timer.set({ time : 1000, autostart : true });</pre>
+
 </body>
 </html>
